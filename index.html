@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluasi Mekari Qontak - JL Collection</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans antialiased">
+
+    <div class="max-w-3xl mx-auto my-10 p-8 bg-white rounded-xl shadow-md border border-gray-100">
+        <!-- Header -->
+        <div class="border-b border-gray-200 pb-6 mb-6">
+            <h1 class="text-2xl font-bold text-gray-900">Evaluasi Penggunaan Mekari Qontak</h1>
+            <p class="text-sm text-gray-500 mt-1">JL Collection - Multi Unit Evaluation Form</p>
+            <p class="text-xs text-red-500 mt-2 font-medium">* Wajib diisi untuk persiapan perpanjangan kontrak</p>
+        </div>
+
+        <form id="evaluationForm" class="space-y-6">
+            
+            <!-- Identitas Responden & Pilihan Unit -->
+            <div class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Nama Lengkap *</label>
+                        <input type="text" id="nama" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1">Divisi / Departemen *</label>
+                        <select id="divisi" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm bg-white">
+                            <option value="">-- Pilih Divisi --</option>
+                            <option value="marcom">Marcom & Marketing</option>
+                            <option value="fo">Front Office (FO)</option>
+                            <option value="reservasi">Reservasi</option>
+                            <option value="management">Management / IT</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">Unit Bisnis / Hotel *</label>
+                    <select id="unit" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm bg-white">
+                        <option value="">-- Pilih Unit --</option>
+                        <option value="episode_jgs">Episode Gading Serpong</option>
+                        <option value="unit_2">Nama Unit JL Collection 2</option>
+                        <option value="unit_3">Nama Unit JL Collection 3</option>
+                        <option value="unit_lainnya">Unit Lainnya</option>
+                    </select>
+                </div>
+            </div>
+
+            <hr class="border-gray-200">
+
+            <!-- 1. Performa Sistem & Kemudahan -->
+            <div>
+                <h3 class="text-lg font-bold text-gray-800 mb-3">1. Performa Sistem & Kemudahan</h3>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Bagaimana kestabilan aplikasi Mekari Qontak selama ini? (Jarang error/down) *</label>
+                        <div class="flex items-center space-x-4 text-sm">
+                            <label class="flex items-center"><input type="radio" name="stabilitas" value="1" required class="mr-2"> 1 (Buruk)</label>
+                            <label class="flex items-center"><input type="radio" name="stabilitas" value="2" class="mr-2"> 2</label>
+                            <label class="flex items-center"><input type="radio" name="stabilitas" value="3" class="mr-2"> 3</label>
+                            <label class="flex items-center"><input type="radio" name="stabilitas" value="4" class="mr-2"> 4</label>
+                            <label class="flex items-center"><input type="radio" name="stabilitas" value="5" class="mr-2"> 5 (Sangat Baik)</label>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Apakah sistem Mekari Qontak mudah dioperasikan oleh tim Anda? *</label>
+                        <div class="flex items-center space-x-4 text-sm">
+                            <label class="flex items-center"><input type="radio" name="kemudahan" value="1" required class="mr-2"> 1 (Sulit)</label>
+                            <label class="flex items-center"><input type="radio" name="kemudahan" value="2" class="mr-2"> 2</label>
+                            <label class="flex items-center"><input type="radio" name="kemudahan" value="3" class="mr-2"> 3</label>
+                            <label class="flex items-center"><input type="radio" name="kemudahan" value="4" class="mr-2"> 4</label>
+                            <label class="flex items-center"><input type="radio" name="kemudahan" value="5" class="mr-2"> 5 (Sangat Mudah)</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="border-gray-200">
+
+            <!-- 2. Dampak Terhadap Kinerja Tim -->
+            <div>
+                <h3 class="text-lg font-bold text-gray-800 mb-3">2. Dampak Terhadap Kinerja Tim</h3>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Bagi FO & Reservasi: Apakah fitur Omnichannel/Chat mempercepat respon ke tamu?</label>
+                        <select id="dampak_fo" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm bg-white">
+                            <option value="">-- Pilih Dampak --</option>
+                            <option value="sangat_cepat">Ya, Sangat Mempercepat</option>
+                            <option value="cukup">Cukup Membantu</option>
+                            <option value="biasa">Biasa Saja / Sama Seperti Manual</option>
+                            <option value="menghambat">Malah Menghambat Alur</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Bagi Marcom/Marketing: Bagaimana efektivitas fitur Blast/Otomatisasi untuk campaign?</label>
+                        <select id="dampak_marketing" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm bg-white">
+                            <option value="">-- Pilih Dampak --</option>
+                            <option value="sangat_efektif">Sangat Efektif (ROI Tinggi)</option>
+                            <option value="lumayan">Cukup Efektif</option>
+                            <option value="kurang">Kurang Efektif / Konversi Rendah</option>
+                            <option value="tidak_pakai">Tidak Pernah Menggunakan Fitur Ini</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="border-gray-200">
+
+            <!-- 3. Kesimpulan & Umpan Balik -->
+            <div>
+                <h3 class="text-lg font-bold text-gray-800 mb-3">3. Kesimpulan & Umpan Balik</h3>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Apakah menurut Anda kontrak Mekari Qontak ini perlu diperpanjang? *</label>
+                        <div class="space-y-2 text-sm">
+                            <label class="flex items-center"><input type="radio" name="perpanjang" value="ya" required class="mr-2"> Ya, perpanjang dengan paket yang sama.</label>
+                            <label class="flex items-center"><input type="radio" name="perpanjang" value="ya_upgrade" class="mr-2"> Ya, tapi perlu upgrade fitur/tambah kuota.</label>
+                            <label class="flex items-center"><input type="radio" name="perpanjang" value="ya_downgrade" class="mr-2"> Ya, tapi kurangi kuota/fitur (pemborosan).</label>
+                            <label class="flex items-center"><input type="radio" name="perpanjang" value="tidak" class="mr-2"> Tidak, sebaiknya cari alternatif vendor lain.</label>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Tuliskan kendala utama atau saran perbaikan terkait Mekari Qontak:</label>
+                        <textarea id="saran" rows="4" placeholder="Contoh: CS Mekari lambat membalas, WhatsApp sering centang satu, atau butuh training ulang..." class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tombol Submit -->
+            <div class="pt-4">
+                <button type="submit" id="submitBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-4 rounded-lg transition duration-200 text-sm cursor-pointer shadow-sm">
+                    Kirim Evaluasi
+                </button>
+            </div>
+
+        </form>
+    </div>
+
+    <!-- ================= INSTALASI FIREBASE DENGAN DATA LENGKAP ================= -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        // CONFIG FIREBASE (Silakan samakan dengan kredensial projek Anda)
+        const firebaseConfig = {
+            apiKey: "SEMAK_API_KEY_ANDA_DI_SINI",
+            authDomain: "projek-anda.firebaseapp.com",
+            projectId: "projek-anda",
+            storageBucket: "projek-anda.appspot.com",
+            messagingSenderId: "1234567890",
+            appId: "1:1234567890:web:abcdef123456"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Aksi saat form disubmit
+        document.getElementById('evaluationForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.innerText = "Mengirim...";
+            submitBtn.disabled = true;
+
+            // Mengumpulkan seluruh value input form
+            const nama = document.getElementById('nama').value;
+            const divisi = document.getElementById('divisi').value;
+            const unit = document.getElementById('unit').value;
+            const stabilitas = document.querySelector('input[name="stabilitas"]:checked').value;
+            const kemudahan = document.querySelector('input[name="kemudahan"]:checked').value;
+            const dampakFo = document.getElementById('dampak_fo').value;
+            const dampakMarketing = document.getElementById('dampak_marketing').value;
+            const perpanjang = document.querySelector('input[name="perpanjang"]:checked').value;
+            const saran = document.getElementById('saran').value;
+
+            try {
+                // Mengirim struktur data lengkap ke koleksi Firebase
+                await addDoc(collection(db, "evaluasi_qontak"), {
+                    nama: nama,
+                    divisi: divisi,
+                    unit: unit,
+                    stabilitas: stabilitas,
+                    kemudahan: kemudahan,
+                    dampakFo: dampakFo,
+                    dampakMarketing: dampakMarketing,
+                    perpanjang: perpanjang,
+                    saran: saran,
+                    createdAt: serverTimestamp()
+                });
+
+                alert("Terima kasih! Evaluasi Anda berhasil dikirim.");
+                document.getElementById('evaluationForm').reset();
+
+            } catch (error) {
+                console.error("Firebase Error: ", error);
+                alert("Gagal mengirim data. Silakan cek koneksi atau konfigurasi Firebase.");
+            } finally {
+                submitBtn.innerText = "Kirim Evaluasi";
+                submitBtn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>
