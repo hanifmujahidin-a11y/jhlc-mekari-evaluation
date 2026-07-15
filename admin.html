@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Evaluasi Mekari Qontak</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans antialiased">
+
+    <div class="max-w-7xl mx-auto px-4 py-8">
+        <!-- Header -->
+        <div class="mb-8 border-b border-gray-200 pb-5 flex justify-between items-center">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900">Dashboard Admin Evaluasi</h1>
+                <p class="text-sm text-gray-500 mt-1">JL Collection - Mekari Qontak Review</p>
+            </div>
+            <div id="loading-status" class="text-sm font-medium text-blue-600 animate-pulse">
+                Menghubungkan ke Firebase...
+            </div>
+        </div>
+
+        <!-- ================= STATISTIK GENERAL (BAGIAN ATAS) ================= -->
+        <h2 class="text-xl font-bold text-gray-800 mb-4">Ringkasan General (Semua Unit)</h2>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-5 mb-10">
+            <!-- Total Responden -->
+            <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200">
+                <p class="text-sm font-medium text-gray-500 uppercase">Total Responden</p>
+                <p id="gen-total" class="text-3xl font-bold text-gray-900 mt-2">0</p>
+            </div>
+            <!-- Rata-rata Stabilitas -->
+            <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200">
+                <p class="text-sm font-medium text-gray-500 uppercase">Rata-rata Stabilitas</p>
+                <p id="gen-stabilitas" class="text-3xl font-bold text-green-600 mt-2">0.0 <span class="text-sm text-gray-400">/ 5</span></p>
+            </div>
+            <!-- Rata-rata Kemudahan -->
+            <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200">
+                <p class="text-sm font-medium text-gray-500 uppercase">Rata-rata Kemudahan</p>
+                <p id="gen-kemudahan" class="text-3xl font-bold text-blue-600 mt-2">0.0 <span class="text-sm text-gray-400">/ 5</span></p>
+            </div>
+            <!-- Rekomendasi Perpanjang -->
+            <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200">
+                <p class="text-sm font-medium text-gray-500 uppercase">Rekomendasi Perpanjang</p>
+                <p id="gen-perpanjang" class="text-3xl font-bold text-purple-600 mt-2">0%</p>
+            </div>
+        </div>
+
+        <!-- ================= HASIL DIKELOMPOKKAN PER UNIT ================= -->
+        <h2 class="text-xl font-bold text-gray-800 mb-4">Data Evaluasi Berdasarkan Unit</h2>
+        <div id="unit-container" class="space-y-10">
+            <!-- Konten per unit akan di-generate otomatis oleh JavaScript di bawah -->
+            <div class="text-center py-10 text-gray-400 bg-white rounded-xl shadow-sm border">
+                Belum ada data yang masuk.
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= SETUP FIREBASE & LOGIKA TAMPILAN ================= -->
+    <!-- Menggunakan Firebase SDK v10 (Modular) via CDN -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        // 1. ISI DENGAN KONFIGURASI PROJEK FIREBASE ANDA
+        const firebaseConfig = {
+            apiKey: "SEMAK_API_KEY_ANDA_DI_SINI",
+            authDomain: "projek-anda.firebaseapp.com",
+            projectId: "projek-anda",
+            storageBucket: "projek-anda.appspot.com",
+            messagingSenderId: "1234567890",
+            appId: "1:1234567890:web:abcdef123456"
+        };
+
+        // Inisialisasi Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        
+        // Mengacu ke koleksi bernama 'evaluasi_qontak'
+        const evaluasiRef = collection(db, "evaluasi_qontak");
+
+        // Perubahan data secara Real-time
+        onSnapshot(evaluasiRef, (snapshot) => {
+            document.getElementById('loading-status').innerText = "Data Terkini (Real-time)";
+            document.getElementById('loading-status').classList.remove('animate-pulse', 'text-blue-600');
+            document.getElementById('loading-status').classList.add('text-green-600');
+
+            let allData = [];
+            snapshot.forEach((doc) => {
+                allData.push(doc.data());
+            });
+
+            if (allData.length > 0) {
+                hitungGeneral(allData);
+                tampilkanPerUnit(allData);
+            }
+        }, (error) => {
+            console.error("Firebase Error: ", error);
+            document.getElementById('loading-status').innerText = "Gagal memuat data dari Firebase.";
+            document.getElementById('loading-status').classList.add('text-red-600');
+        });
+
+        // 2. FUNGSI HITUNG STATISTIK GENERAL
+        function hitungGeneral(data) {
+            let total = data.length;
+            let totalStabilitas = 0;
+            let totalKemudahan = 0;
+            let setujuPerpanjang = 0;
+
+            data.forEach(item => {
+                totalStabilitas += parseInt(item.stabilitas || 0);
+                totalKemudahan += parseInt(item.kemudahan || 0);
+                if (item.perpanjang && item.perpanjang.startsWith('ya')) {
+                    setujuPerpanjang++;
+                }
+            });
+
+            document.getElementById('gen-total').innerText = total;
+            document.getElementById('gen-stabilitas').innerHTML = `${(totalStabilitas / total).toFixed(1)} <span class="text-sm text-gray-400">/ 5</span>`;
+            document.getElementById('gen-kemudahan').innerHTML = `${(totalKemudahan / total).toFixed(1)} <span class="text-sm text-gray-400">/ 5</span>`;
+            document.getElementById('gen-perpanjang').innerText = `${((setujuPerpanjang / total) * 100).toFixed(0)}%`;
+        }
+
+        // 3. FUNGSI PENGELOMPOKAN & TAMPILAN PER UNIT
+        function tampilkanPerUnit(data) {
+            const container = document.getElementById('unit-container');
+            container.innerHTML = ""; // Bersihkan dummy text
+
+            // Kelompokkan data berdasarkan properti 'unit'
+            const dataPerUnit = data.reduce((groups, item) => {
+                const unitName = item.unit || "Unit Tidak Diketahui";
+                if (!groups[unitName]) groups[unitName] = [];
+                groups[unitName].push(item);
+                return groups;
+            }, {});
+
+            // Mapping ID Unit ke Nama yang rapi (Opsional)
+            const namaUnitMapping = {
+                'episode_jgs': 'Episode Gading Serpong',
+                'unit_2': 'Nama Unit JL Collection 2',
+                'unit_3': 'Nama Unit JL Collection 3',
+                'unit_lainnya': 'Unit Lainnya'
+            };
+
+            // Loop untuk setiap kelompok unit
+            for (const [unitId, items] of Object.entries(dataPerUnit)) {
+                const namaUnitTampil = namaUnitMapping[unitId] || unitId;
+                
+                let barisTabel = items.map(item => `
+                    <tr class="border-b border-gray-100 hover:bg-gray-50">
+                        <td class="px-4 py-3 font-medium">${item.nama || '-'}</td>
+                        <td class="px-4 py-3 capitalize text-sm">${item.divisi || '-'}</td>
+                        <td class="px-4 py-3 text-center font-bold text-green-600">${item.stabilitas || '-'}</td>
+                        <td class="px-4 py-3 text-center font-bold text-blue-600">${item.kemudahan || '-'}</td>
+                        <td class="px-4 py-3 text-sm max-w-xs truncate" title="${item.saran || ''}">${item.saran || '<span class="text-gray-300">-</span>'}</td>
+                    </tr>
+                `).join('');
+
+                let unitBlock = `
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                        <div class="bg-gray-900 px-6 py-4 flex justify-between items-center text-white">
+                            <h3 class="font-bold text-lg">${namaUnitTampil}</h3>
+                            <span class="bg-blue-600 text-xs px-2.5 py-1 rounded-full font-semibold">${items.length} Responden</span>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse text-sm">
+                                <thead>
+                                    <tr class="bg-gray-50 text-gray-500 font-semibold border-b border-gray-200">
+                                        <th class="px-4 py-3">Nama</th>
+                                        <th class="px-4 py-3">Divisi</th>
+                                        <th class="px-4 py-3 text-center">Stabilitas</th>
+                                        <th class="px-4 py-3 text-center">Kemudahan</th>
+                                        <th class="px-4 py-3">Kendala / Saran</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${barisTabel}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += unitBlock;
+            }
+        }
+    </script>
+</body>
+</html>
